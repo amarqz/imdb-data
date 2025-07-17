@@ -12,6 +12,11 @@ services:
       imdb:
 
   imdb_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SRC_DIR: api
     container_name: imdb_api
     image: imdb_api
     volumes:
@@ -22,14 +27,29 @@ services:
       imdb_db
 
   imdb_cli:
-  container_name: imdb_cli
-  image: imdb_cli
-  networks:
-    - imdb
-  depends_on:
-    - imdb_api
-  stdin_open: true
-  tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SRC_DIR: cli
+    container_name: imdb_cli
+    image: imdb_cli
+    networks:
+      - imdb
+    depends_on:
+      - imdb_api
+    stdin_open: true
+    tty: true
+
+  imdb_ingestion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SRC_DIR: ingestion
+    image: imdb_ingestion
+    profiles:
+      - build-only
 
 networks:
   imdb:
