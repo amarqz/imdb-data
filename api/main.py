@@ -13,11 +13,12 @@ def check_data():
 def update_data():
     last_uploaded_data: DataControl = check_last_uploaded_data()
 
-    if last_uploaded_data.status == 'ON':
-        raise HTTPException(409, 'Another update process is already running.')
-    
-    if last_uploaded_data.uploadDate.date() == datetime.now().date():
-        raise HTTPException(403, 'Data was updated within the last 24 hours.')
+    if last_uploaded_data:
+        if last_uploaded_data.status == 'ON':
+            raise HTTPException(409, 'Another update process is already running.')
+        
+        if last_uploaded_data.uploadDate.date() == datetime.now().date():
+            raise HTTPException(403, 'Data was updated within the last 24 hours.')
 
     client = docker.from_env()
     try:
