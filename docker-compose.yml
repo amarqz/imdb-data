@@ -14,7 +14,7 @@ services:
   imdb_api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.api
       args:
         SRC_DIR: api
     container_name: imdb_api
@@ -54,4 +54,6 @@ services:
 networks:
   imdb:
     name: imdb
-    external: true
+
+volumes:
+  imdb_db:
