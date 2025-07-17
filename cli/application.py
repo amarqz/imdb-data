@@ -72,6 +72,7 @@ def update():
     if not response:
         return
     
+    response = response.json()
     if response['status'] == 'Started':
         console.print('Data update process started! It will take a few hours, thank you for your patience.')
         console.print(f'container_id: [i]{response['container_id']}[/i]')
