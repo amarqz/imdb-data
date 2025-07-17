@@ -16,6 +16,12 @@ def check():
     response = api_request('GET', 'checkdata')
     if not response:
         return
+
+    if response.json()['status'] == 'NC':
+        console.print('[bold orange1]WARNING! [/bold orange1] It seems this is the first use of the application. The database structure has been created.')
+        console.print('[bold orange1]WARNING! [/bold orange1] Additionally, a data ingestion process has been summoned. It will take a few hours.')
+        update()
+        return
     
     if datetime.strptime(response.json()['uploadDate'], "%Y-%m-%dT%H:%M:%S.%f").date() < datetime.now().date():
         console.print('[bold orange1]WARNING! [/bold orange1] The database has not been updated today. Please, run the command [dark_sea_green4]update[/dark_sea_green4] to update it with the latest data.')

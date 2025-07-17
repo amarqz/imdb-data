@@ -1,9 +1,9 @@
 import os
 from dotenv import load_dotenv
 from models import *
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.engine import URL
-from sqlmodel import Session, select
+from sqlmodel import Session, select, SQLModel
 
 load_dotenv()
 
@@ -18,6 +18,11 @@ db_url = URL.create(
 engine = create_engine(db_url)
 
 def check_last_uploaded_data() -> DataControl:
+    is_database_created = bool(inspect(engine).get_table_names())
+    if not is_database_created:
+        SQLModel.metadata.create_all(engine)
+        return DataControl(uploadDate=datetime.now(), status='NC')
+
     with Session(engine) as session:
         statement = select(DataControl).order_by(DataControl.uploadDate.desc())
         last_upload: DataControl = session.exec(statement).first()
