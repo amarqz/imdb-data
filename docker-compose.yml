@@ -24,7 +24,7 @@ services:
     networks:
       imdb:
     depends_on:
-      imdb_db
+      - imdb_db
 
   imdb_cli:
     build:
