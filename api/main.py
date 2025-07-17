@@ -5,10 +5,6 @@ from models import *
 
 app = FastAPI()
 
-@app.get('/')
-def root():
-    return {"Hello": "world"}
-
 @app.get('/checkdata')
 def check_data():
     return check_last_uploaded_data()
