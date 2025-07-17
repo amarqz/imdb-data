@@ -65,6 +65,10 @@ def update():
     response = api_request('POST', 'updatedata')
     if not response:
         return
+    
+    if response['status'] == 'Started':
+        console.print('Data update process started! It will take a few hours, thank you for your patience.')
+        console.print(f'container_id: [i]{response['container_id']}[/i]')
 
 
 def api_request(verb: str, endpoint: str, **params) -> requests.Response | None:

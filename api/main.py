@@ -1,3 +1,4 @@
+import docker
 from db import *
 from fastapi import FastAPI, HTTPException
 from models import *
@@ -22,8 +23,19 @@ def update_data():
     if last_uploaded_data.uploadDate.date() == datetime.now().date():
         raise HTTPException(403, 'Data was updated within the last 24 hours.')
 
-    # exec data update
-    return "Process running..."
+    client = docker.from_env()
+    try:
+        container = client.containers.run(
+            'imdb_ingestion',
+            name='imdb_ingestion',
+            detach=True,
+            remove=True,
+            network='imdb'
+        )
+
+        return {'status': 'Started', "container_id": container.id}
+    except docker.errors.APIError as e:
+        raise HTTPException(500, str(e))
 
 @app.get('/person/{id}')
 def get_name_by_id(id: str):
