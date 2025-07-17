@@ -1,0 +1,37 @@
+services:
+  imdb_db:
+    container_name: imdb_db
+    image: postgres:17-alpine
+    volumes:
+      - imdb_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=imdbdb
+      - POSTGRES_USER=imdb_user
+      - POSTGRES_DB=imdb_db
+    networks:
+      imdb:
+
+  imdb_api:
+    container_name: imdb_api
+    image: imdb_api
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      imdb:
+    depends_on:
+      imdb_db
+
+  imdb_cli:
+  container_name: imdb_cli
+  image: imdb_cli
+  networks:
+    - imdb
+  depends_on:
+    - imdb_api
+  stdin_open: true
+  tty: true
+
+networks:
+  imdb:
+    name: imdb
+    external: true
