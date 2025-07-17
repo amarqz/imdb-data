@@ -48,8 +48,6 @@ services:
       args:
         SRC_DIR: ingestion
     image: imdb_ingestion
-    profiles:
-      - build-only
 
 networks:
   imdb:
