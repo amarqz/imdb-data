@@ -1,0 +1,243 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+      "title": "IMDb_api",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/checkdata": {
+        "get": {
+          "summary": "Check Data",
+          "operationId": "check_data_checkdata_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/DataControl"
+                  },
+                  "example": {
+                    "uploadDate": "2025-07-19T15:32:00",
+                    "status": "NC"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/updatedata": {
+        "post": {
+          "summary": "Update Data",
+          "operationId": "update_data_updatedata_post",
+          "responses": {
+            "200": {
+              "description": "Container started",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": { "type": "string", "example": "Started" },
+                      "container_id": { "type": "string", "example": "abcdef123456" }
+                    }
+                  }
+                }
+              }
+            },
+            "403": { "description": "Updated within last 24 hours" },
+            "409": { "description": "Update already running" },
+            "500": { "description": "Docker error" }
+          }
+        }
+      },
+      "/person/{id}": {
+        "get": {
+          "summary": "Get Name by ID",
+          "operationId": "get_name_by_id_person__id__get",
+          "parameters": [
+            { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": { "type": "string" },
+                  "example": "Bryan Cranston"
+                }
+              }
+            },
+            "404": { "description": "Not found" }
+          }
+        }
+      },
+      "/person": {
+        "get": {
+          "summary": "Get Person Info",
+          "operationId": "get_person_person_get",
+          "parameters": [
+            { "name": "name", "in": "query", "required": true, "schema": { "type": "string" } },
+            { "name": "role", "in": "query", "required": true, "schema": { "type": "string" } }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": { "$ref": "#/components/schemas/ProNameBasics" }
+                }
+              }
+            },
+            "404": { "description": "Not found" }
+          }
+        }
+      },
+      "/principals/{id}": {
+        "get": {
+          "summary": "Get Principals from Title",
+          "operationId": "get_principals_from_title_principals__id__get",
+          "parameters": [
+            { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
+            { "name": "order", "in": "query", "required": true, "schema": { "type": "integer" } }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": { "$ref": "#/components/schemas/ProTitlePrincipals" }
+                }
+              }
+            },
+            "404": { "description": "Not found" }
+          }
+        }
+      },
+      "/rating/{id}": {
+        "get": {
+          "summary": "Get Rating Info",
+          "operationId": "get_rating_rating__id__get",
+          "parameters": [
+            { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": { "$ref": "#/components/schemas/ProTitleRatings" }
+                }
+              }
+            },
+            "404": { "description": "Not found" }
+          }
+        }
+      },
+      "/title/{id}": {
+        "get": {
+          "summary": "Get Title by ID",
+          "operationId": "get_title_by_id_title__id__get",
+          "parameters": [
+            { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": { "type": "string" },
+                  "example": "Breaking Bad"
+                }
+              }
+            },
+            "404": { "description": "Not found" }
+          }
+        }
+      },
+      "/title": {
+        "get": {
+          "summary": "Get Title Info",
+          "operationId": "get_title_title_get",
+          "parameters": [
+            { "name": "name", "in": "query", "required": true, "schema": { "type": "string" } },
+            { "name": "kind", "in": "query", "required": true, "schema": { "type": "string" } }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": { "$ref": "#/components/schemas/ProTitleBasics" }
+                }
+              }
+            },
+            "404": { "description": "Not found" }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "DataControl": {
+          "title": "DataControl",
+          "type": "object",
+          "properties": {
+            "uploadDate": { "type": "string", "format": "date-time" },
+            "status": { "type": "string", "maxLength": 2 }
+          },
+          "required": ["uploadDate", "status"]
+        },
+        "ProNameBasics": {
+          "title": "ProNameBasics",
+          "type": "object",
+          "properties": {
+            "nconst": { "type": "string" },
+            "primaryName": { "type": "string" },
+            "birthYear": { "type": "integer" },
+            "deathYear": { "type": "integer" },
+            "primaryProfession": { "type": "string" },
+            "knownForTitles": { "type": "string" }
+          }
+        },
+        "ProTitlePrincipals": {
+          "title": "ProTitlePrincipals",
+          "type": "object",
+          "properties": {
+            "tconst": { "type": "string" },
+            "ordering": { "type": "integer" },
+            "nconst": { "type": "string" },
+            "category": { "type": "string" },
+            "job": { "type": "string" },
+            "characters": { "type": "string" }
+          }
+        },
+        "ProTitleBasics": {
+          "title": "ProTitleBasics",
+          "type": "object",
+          "properties": {
+            "tconst": { "type": "string" },
+            "titleType": { "type": "string" },
+            "primaryTitle": { "type": "string" },
+            "originalTitle": { "type": "string" },
+            "isAdult": { "type": "integer" },
+            "startYear": { "type": "integer" },
+            "endYear": { "type": "integer" },
+            "runtimeMinutes": { "type": "integer" },
+            "genres": { "type": "string" }
+          }
+        },
+        "ProTitleRatings": {
+          "title": "ProTitleRatings",
+          "type": "object",
+          "properties": {
+            "tconst": { "type": "string" },
+            "averageRating": { "type": "number", "format": "float" },
+            "numVotes": { "type": "integer" }
+          }
+        }
+      }
+    }
+  }
+  

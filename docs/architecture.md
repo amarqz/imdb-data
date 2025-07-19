@@ -10,6 +10,12 @@ All the modules, except for `imdb_db` are built using a `Dockerfile` with argume
 
 <img width="594" height="782" alt="imagen" src="https://github.com/user-attachments/assets/11f6fb82-14fe-4188-aba6-9208d3050053" />
 
+## API service structure
+
+`imdb_api` serves as the primary interface layer, implementing eight RESTful endpoints that provide access to IMDb data. The `/updatedata` endpoint uniquely demonstrates the system's container orchestration capability by dynamically spawning imdb_ingestion containers.
+
+You may check the [API's definition](swagger.json) using a Swagger JSON viewer.
+
 ## Data flow architecture
 
 The system implements a dual-layer flow pattern with staging and production schemas. With it, minimal downtime can be achieved when launching the ingestion module to update the data. Meanwhile newer data is loaded to the staging tables, the older data is still ready to be served from the production tables. Once the staging table load process finishes with success, a `staging_to_production()` migration is called.
