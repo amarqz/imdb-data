@@ -2,7 +2,7 @@
 
 ## Overview
 
-**imdb-data** is a system that provides users a way to get information from IMDb in a friendly manner. It is a containerised microservices system capable of ingesting, processing and serving the IMDb dataset information through the usage of REST APIs and a CLI application.
+**imdb-data** provides users a way to get information from IMDb in a friendly manner. It is a containerised microservices system capable of ingesting, processing and serving the IMDb dataset information through the usage of REST APIs and a CLI application.
 
 The system consists of three main parts:
 - **imdb_db**: a PostgreSQL database that provides data persistence. PostgreSQL is an open-source DBMS popular choice for reliable data storage and scalability.
@@ -10,6 +10,8 @@ The system consists of three main parts:
 - **imdb_client-server** (namely system_module_2):
   - **imdb_api**: HTTP interface for the system's database, implemented using Python as a FastAPI application. This service exposes a set of RESTful endpoints for querying the data and managing the ingestion processes.
   - **imdb_cli**: user-friendly command line application developed in Python using the `Typer` library for command parsing and `rich` for enhanced console output. The CLI has been developed as a REPL CLI application.
+
+**imdb-data** has been developed and tested with in `Python 3.12.x`.
 
 ### Dependencies
 
