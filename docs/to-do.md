@@ -7,3 +7,4 @@ List of feasible things to improve the overall experience:
 - More endpoints could be implemented allowing for more dataset coverage.
 - OR, some tables could be dropped from the ingestion pipeline to just load the needed data tables for the existing endpoints.
 - Improve REPL CLI application navigation using the keyboard arrows or command completion using Tab.
+- Increase test suite with more test cases.
