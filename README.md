@@ -11,6 +11,23 @@ The system consists of three main parts:
   - **imdb_api**: HTTP interface for the system's database, implemented using Python as a FastAPI application. This service exposes a set of RESTful endpoints for querying the data and managing the ingestion processes.
   - **imdb_cli**: user-friendly command line application developed in Python using the `Typer` library for command parsing and `rich` for enhanced console output. The CLI has been developed as a REPL CLI application.
 
+### Dependencies
+
+Currently, all dependencies are shared among all the containers. As mentioned in the [ToDo's](docs/to-do.md) page, in order to optimise the containers' size, one thing to do is to specify the dependencies needed for each. In the next table, you can find the dependencies that each module actually uses.
+
+| Dependency | Consumer module          |
+| ---------- | ------------------------ |
+| docker     | imdb_api                 |
+| fastapi    | imdb_api                 |
+| pandas     | imdb_ingestion           |
+| psycopg    | imdb_ingestion, imdb_api |
+| pydantic   | imdb_ingestion, imdb_api |
+| requests   | imdb_cli                 |
+| rich       | imdb_cli                 |
+| sqlmodel   | imdb_ingestion, imdb_api |
+| typer      | imdb_cli                 |
+| uvicorn    | imdb_api                 |
+
 ## Quickstart
 To quickly set up and run this project, make sure the following are installed on your system:
 1. Docker
